@@ -1,0 +1,16 @@
+{
+    "name": "morozov/stolovaya",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Morozov Roman",
+            "email": "r-r-roma-a-a@yandex.ru"
+        }
+    ],
+    "require": {
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {"App\\": "app/"}
+    }
+}
