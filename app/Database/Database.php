@@ -8,9 +8,9 @@ class Database
 {
     public static function new()
     {
-        $host = 'localhost';
-        $dbname = '';
-        $username = '';
+        $host = '127.0.0.1';
+        $dbname = 'pirizhok';
+        $username = 'root';
         $password = '';
         $charset = 'utf8';
         $collate = 'utf8_unicode_ci';

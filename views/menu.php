@@ -1,4 +1,6 @@
-<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]); ?>
+<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]);
+var_dump($menu);
+?>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
