@@ -48,13 +48,37 @@ class Storage
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($val);
         $result = $stmt->fetchAll();
+
         $menus = [];
         foreach ($result as $item) {
             $menu = new Menu();
-            $menu->setId($item['id']);
-            $menu->setDate($item['date']);
-            array_push($menus, $menu);
+            $menu->date = $item['date'];
+            $menu->id = $item['id'];
+            $menus[$item['id']] = $menu;
+            $menu->positions = [];
         }
+
+        $query = $builder->select()
+            ->setTable('position');
+        $query->where()
+            ->in('menu_id', array_keys($menus))
+            ->end();
+
+        $stmt = $this->conn->prepare($builder->writeFormatted($query));
+        $stmt->execute($builder->getValues());
+        $result = $stmt->fetchAll();
+
+        //$positions = [];
+        foreach ($result as $value) {
+            $position = new Position();
+            foreach ($value as $key => $val) {
+                $position->{$key} = $val;
+            }
+
+            $menus[$value['menu_id']]->positions =
+                array_merge($menus[$value['menu_id']]->positions, [$position]);
+        }
+
 
         return $menus;
     }
