@@ -3,6 +3,7 @@
 namespace App\Domain\Menu;
 
 use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
+use NilPortugues\Sql\QueryBuilder\Syntax\OrderBy;
 
 class Storage
 {
@@ -21,18 +22,32 @@ class Storage
     public function getMenuByDate($date = 'current')
     {
         if ($date === 'current') {
-            $date = date('d.m.Y');
+            $date = date('Y-m-d');
         }
 
-        return $this->getMenu(['date' => $date]);
+        $builder = new MySqlBuilder();
+
+        $menu = $this->getMenu(['date' => $date]);
+
+//        $id = $menu[0]->id;
+//
+//        $query = $builder->select()
+//            ->setTable('position')
+//            ->orderBy('group_name', OrderBy::ASC)
+//            ->where()
+//            ->equals("menu_id", $id)
+//                ->end();
+//
+//        $stmt = $this->conn->prepare($builder->writeFormatted($query));
+//        $stmt->execute($builder->getValues());
+//        $result = $stmt->fetchAll();
+
+        return $menu[0] ?? false;
     }
 
     public function getMenu($filter = [])
     {
         $builder = new MySqlBuilder();
-
-        $filter = [];
-        $filter['date'] = '2029-09-20';
 
         $query = $builder->select()
             ->setTable('menu');
@@ -68,7 +83,6 @@ class Storage
         $stmt->execute($builder->getValues());
         $result = $stmt->fetchAll();
 
-        //$positions = [];
         foreach ($result as $value) {
             $position = new Position();
             foreach ($value as $key => $val) {
@@ -80,6 +94,6 @@ class Storage
         }
 
 
-        return $menus;
+        return array_values($menus);
     }
 }
