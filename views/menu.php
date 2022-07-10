@@ -1,21 +1,5 @@
 <?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]);
-//$hotDishes = [];
-//$coldDishes = [];
-//$drinks = [];
 
-//foreach ($menu->positions as $position) {
-//    switch ($position){
-//        case "Горячие блюда":
-//            $hotDishes[] = $position;
-//            break;
-//        case "Холодные блюда":
-//            $coldDishes[] = $position;
-//            break;
-//        case "Напитки":
-//            $drinks[] = $position;
-//            break;
-//    }
-//}
 ?>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
