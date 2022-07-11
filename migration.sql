@@ -3,7 +3,7 @@ CREATE TABLE menu
     id         INT(11) UNSIGNED AUTO_INCREMENT,
     date       DATE,
     created_at INT(11) UNSIGNED,
-    updated_at INT(11) UNSIGNED,
+    updated_at INT (11) UNSIGNED,
     PRIMARY KEY (id)
 );
 

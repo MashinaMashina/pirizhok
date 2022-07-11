@@ -1,4 +1,6 @@
-<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]); ?>
+<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]);
+
+?>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
@@ -12,8 +14,50 @@
             <h2 class="mt-5">Ваша компания: ЦИТ Барс</h2>
 
             <div class="menu my-5">
-                <h4>Холодные блюда</h4>
 
+                <?
+                $group_name = "";
+                foreach ($menu->positions as $value) {
+                    if($value->group_name != $group_name){
+                        $group_name = $value->group_name;
+                        echo "<h4>$value->group_name</h4>";
+                    }
+                    echo "<div class='menu-item js-menu-item row'>
+                    <div class='col-sm-12 col-md-4 mb-3 text-center text-md-start '>
+                        <span class='fw-bold align-middle js-item-name'>$value->name</span>
+                    </div>
+                    <div class='col-sm-12 col-md-2'>
+                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                            <div class='col-auto'>
+									<span class='form-text'>
+									  <span class='js-item-price'>$value->price</span> р.
+									</span>
+                            </div><div class='col-auto'>
+									<span class='form-text js-item-measure'>
+                    за $value->weight 
+									</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-12 col-md-6'>
+                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                            <div class='col-auto col-4'>
+                                <input type='number' class='form-control js-item-count' placeholder='0'>
+                            </div>
+                            <div class='col-auto'>
+									<span class='form-text'>
+                    порций
+									</span>
+                            </div>
+                            <div class='col-auto'>
+                                <button type='button' class='btn btn-primary js-to-cart'>В корзину</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>";
+                }
+                ?>
+                <h4>Холодные блюда</h4>
                 <div class="menu-item js-menu-item row">
                     <div class="col-sm-12 col-md-4 mb-3 text-center text-md-start ">
                         <span class="fw-bold align-middle js-item-name">Рататуй (морковь, баклажан, кабачок, сельдерей, болгарский перец)</span>
@@ -47,6 +91,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div>
         </div>

@@ -7,6 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInit90d3e059879f19ac789f4faa131a0e5a
 {
     public static $prefixLengthsPsr4 = array (
+        'N' => 
+        array (
+            'NilPortugues\\Sql\\QueryFormatter\\' => 32,
+            'NilPortugues\\Sql\\QueryBuilder\\' => 30,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -14,6 +19,14 @@ class ComposerStaticInit90d3e059879f19ac789f4faa131a0e5a
     );
 
     public static $prefixDirsPsr4 = array (
+        'NilPortugues\\Sql\\QueryFormatter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nilportugues/sql-query-formatter/src',
+        ),
+        'NilPortugues\\Sql\\QueryBuilder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nilportugues/sql-query-builder/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',

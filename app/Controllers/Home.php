@@ -12,8 +12,14 @@ class Home {
         $menu = (new Storage($db))->getMenuByDate();
 
         $view = new View();
-        $view->render('menu', [
-            'menu' => $menu,
-        ]);
+        if(false){
+            $view->render('simple_menu', [
+                'menu' => $menu,
+            ]);
+        } else {
+            $view->render('menu', [
+                'menu' => $menu,
+            ]);
+        }
     }
 }
