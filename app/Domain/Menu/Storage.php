@@ -8,6 +8,7 @@ use NilPortugues\Sql\QueryBuilder\Syntax\OrderBy;
 class Storage
 {
     protected $conn;
+    public $error = '';
 
     public function __construct($conn)
     {
@@ -86,5 +87,98 @@ class Storage
         }
 
         return array_values($menus);
+    }
+
+    public function save($menu)
+    {
+        if (empty($menu->positions)) {
+            $this->error = 'не возможно создать меню без товарных позиций';
+            return false;
+        }
+
+        $this->conn->beginTransaction();
+        if (!$this->saveMenu($menu)) {
+            $this->conn->rollback();
+            return false;
+        }
+        if (!$this->savePositions($menu->positions ?? [], $menu->id)) {
+            $this->conn->rollback();
+            return false;
+        }
+        $this->conn->commit();
+
+        return true;
+    }
+
+    protected function saveMenu($menu)
+    {
+        $values = [
+            'date' => $menu->date ?? '',
+            'updated_at' => time(),
+        ];
+
+        $builder = new MySqlBuilder();
+
+        if (empty($menu->id)) {
+            $values['created_at'] = $values['updated_at'];
+            $query = $builder->insert();
+        } else {
+            $query = $builder->update();
+        }
+
+        $query = $query
+            ->setTable('menu')
+            ->setValues($values);
+
+        $stmt = $this->conn->prepare($builder->write($query));
+        if (!$stmt->execute($builder->getValues())) {
+            $this->error = $stmt->errorInfo();
+            return false;
+        }
+
+        $menuId = $menu->id;
+        if (empty($menuId)) {
+            $menuId = $this->conn->lastInsertId();
+        }
+
+        $menu->id = $menuId;
+        return $menuId > 0;
+    }
+
+    protected function savePositions($positions, $menuId)
+    {
+        $builder = new MySqlBuilder();
+        $query = $builder->delete()
+            ->setTable('position');
+        $query->where()
+            ->equals('menu_id', $menuId);
+
+        $stmt = $this->conn->prepare($builder->write($query));
+
+        if (!$stmt->execute($builder->getValues())) {
+            $this->error = $stmt->errorInfo();
+            return false;
+        }
+
+        if (!count($positions)) {
+            return true;
+        }
+
+        $query = $builder->insert()
+            ->setTable('position');
+
+        foreach ($positions as $position) {
+            $values = ['menu_id' => $menuId] + $position->getAll();
+
+            $query->setValues($values);
+            $stmt = $this->conn->prepare($builder->write($query));
+
+            if (!$stmt->execute($builder->getValues())) {
+                $this->error = $stmt->errorInfo();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

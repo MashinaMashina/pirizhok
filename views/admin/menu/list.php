@@ -8,8 +8,10 @@
                 <li><a href="<?=BASE_DIR?>admin">Панель администратора</a></li>
             </ul>
 
+            <a href="<?=BASE_DIR?>admin/menu/edit" class="btn btn-success btn-sm mb-3">Добавить меню</a><br>
+
             <?foreach ($menus as $menu):?>
-                <a href="<?=BASE_DIR?>admin/menu/<?=intval($menu->id)?>"><?=htmlentities($menu->date)?></a><br>
+                <a href="<?=BASE_DIR?>admin/menu/edit/<?=intval($menu->id)?>"><?=htmlentities($menu->date)?></a><br>
             <?endforeach;?>
         </div>
     </main>

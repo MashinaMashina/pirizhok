@@ -29,11 +29,11 @@ class Order
             'comment' => 'пюрешку без соли!',
         ]);
 
-        $db = Database::get();
-        $res = (new Storage($db))->save($order);
+        $storage = new Storage(Database::get());
+        $res = $storage->save($order);
 
-        if ($res !== true) {
-            echo json_encode(['success' => false, 'message' => $res]);
+        if (!$res) {
+            echo json_encode(['success' => false, 'message' => $storage->error]);
         } elseif (rand(0, 1) == 1) {
             echo json_encode(['success' => true]);
         } else {

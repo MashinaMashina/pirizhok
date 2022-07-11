@@ -7,6 +7,7 @@ use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
 class Storage
 {
     protected $conn;
+    public $error = '';
 
     public function __construct($conn)
     {
@@ -16,7 +17,8 @@ class Storage
     public function save($order)
     {
         if (empty($order->positions)) {
-            return 'не возможно создать заказ без товарных позиций';
+            $this->error = 'не возможно создать заказ без товарных позиций';
+            return false;
         }
 
         $values = [
@@ -43,7 +45,8 @@ class Storage
 
         $stmt = $this->conn->prepare($builder->write($query));
         if (!$stmt->execute($builder->getValues())) {
-            return $stmt->errorInfo();
+            $this->error = $stmt->errorInfo();
+            return false;
         }
 
         return true;

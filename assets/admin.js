@@ -6,12 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.addEventListener('click', function (event) {
             event.preventDefault();
 
-            groupIterator++
+            groupIterator--
             let tpl = document.querySelector('#menu-group').innerHTML
-            tpl = tpl.replaceAll('%group%', groupIterator)
+            tpl = tpl.replaceAll('%groupId%', groupIterator)
 
             let div = document.createElement('div')
-            div.className = 'js-group-container'
             div.innerHTML = tpl
 
             document.querySelector('.js-menu-container').append(div)
@@ -20,14 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector('body').addEventListener('click', function (event) {
         if (event.target.matches('.js-add-position')) {
-            posIterator++
+            posIterator--
 
             let tpl = document.querySelector('#menu-position').innerHTML
-            tpl = tpl.replaceAll("%group%", event.target.dataset.num)
-            tpl = tpl.replaceAll("%pos%", posIterator)
+            tpl = tpl.replaceAll("%groupId%", event.target.dataset.num)
+            tpl = tpl.replaceAll("%posId%", posIterator)
 
             let div = document.createElement('div')
-            div.className = 'js-position-container'
             div.innerHTML = tpl
 
             event.target.closest('.js-group-container').querySelector('.js-menu-positions').append(div)
