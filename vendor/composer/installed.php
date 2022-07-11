@@ -1,24 +1,41 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => 'morozov/stolovaya',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'a27cb2ea2072b798022883e2f16887d21212a218',
+        'type' => 'project',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => NULL,
-    'name' => 'morozov/stolovaya',
-  ),
-  'versions' => 
-  array (
-    'morozov/stolovaya' => 
-    array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => NULL,
+    'versions' => array(
+        'morozov/stolovaya' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'a27cb2ea2072b798022883e2f16887d21212a218',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nilportugues/sql-query-builder' => array(
+            'pretty_version' => '1.8.0',
+            'version' => '1.8.0.0',
+            'reference' => 'cc3401099328ddfad54b2b801e38e05a50da11bd',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nilportugues/sql-query-builder',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nilportugues/sql-query-formatter' => array(
+            'pretty_version' => 'v1.2.2',
+            'version' => '1.2.2.0',
+            'reference' => 'a539162a13e3217827237d5809fbaf25e136dc0e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nilportugues/sql-query-formatter',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-  ),
 );

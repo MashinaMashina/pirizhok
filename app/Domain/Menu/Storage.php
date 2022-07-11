@@ -2,6 +2,9 @@
 
 namespace App\Domain\Menu;
 
+use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
+use NilPortugues\Sql\QueryBuilder\Syntax\OrderBy;
+
 class Storage
 {
     protected $conn;
@@ -21,7 +24,7 @@ class Storage
     public function getMenuByDate($date = 'current')
     {
         if ($date === 'current') {
-            $date = date('d.m.Y');
+            $date = date('Y-m-d');
         }
 
         $menu = $this->getMenu(['date' => $date]);
@@ -31,14 +34,52 @@ class Storage
 
     public function getMenu($filter = [])
     {
-        $menu1 = new Menu();
-        $menu1->id = 1;
-        $menu1->date = '2022-10-10';
+        $builder = new MySqlBuilder();
 
-        $menu2 = new Menu();
-        $menu2->id = 2;
-        $menu2->date = '2022-10-10';
+        $query = $builder->select()
+            ->setTable('menu');
 
-        return [$menu1, $menu2];
+        foreach ($filter as $item => $value) {
+            $query->where()
+                ->equals($item, $value)
+                ->end();
+        }
+
+        $sql = $builder->writeFormatted($query);
+        $val = $builder->getValues();
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($val);
+        $result = $stmt->fetchAll();
+
+        $menus = [];
+        foreach ($result as $item) {
+            $menu = new Menu();
+            $menu->date = $item['date'];
+            $menu->id = $item['id'];
+            $menus[$item['id']] = $menu;
+            $menu->positions = [];
+        }
+
+        $query = $builder->select()
+            ->setTable('position');
+        $query->where()
+            ->in('menu_id', array_keys($menus))
+            ->end();
+
+        $stmt = $this->conn->prepare($builder->writeFormatted($query));
+        $stmt->execute($builder->getValues());
+        $result = $stmt->fetchAll();
+
+        foreach ($result as $value) {
+            $position = new Position();
+            foreach ($value as $key => $val) {
+                $position->{$key} = $val;
+            }
+
+            $menus[$value['menu_id']]->positions =
+                array_merge($menus[$value['menu_id']]->positions, [$position]);
+        }
+
+        return array_values($menus);
     }
 }
