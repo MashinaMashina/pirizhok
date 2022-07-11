@@ -11,3 +11,5 @@ INSERT INTO position (name, price, weight, group_name, menu_id) VALUES ('Бор�
 INSERT INTO position (name, price, weight, group_name, menu_id) VALUES ('Сок', 30, '400мл', 'Напитки', 1);
 INSERT INTO position (name, price, weight, group_name, menu_id) VALUES ('Компот', 30, '400мл', 'Напитки', 1);
 INSERT INTO position (name, price, weight, group_name, menu_id) VALUES ('Оливье', 60, '300г', 'Холодные блюда', 1);
+
+INSERT INTO companies (name, code) VALUES ('ЦИТ Барс', 'ad773e0079da9f0376c71bab17085891');

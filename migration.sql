@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS orders
 (
     id            INT(11) UNSIGNED AUTO_INCREMENT,
     company_id    INT(11) UNSIGNED,
-    name          VARCHAR(255),
+    user_name          VARCHAR(255),
     positions     TEXT,
     comment       VARCHAR(255),
     admin_comment VARCHAR(255),

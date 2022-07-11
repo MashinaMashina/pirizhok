@@ -2,6 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Database\Database;
+use App\Domain\Menu\Position;
+use App\Domain\Order\Storage;
+
 class Order
 {
     public static function create()
@@ -11,7 +15,26 @@ class Order
             die('invalid request method');
         }
 
-        if (rand(0, 1) == 1) {
+        $position = new Position();
+        $position->name = 'Картофельное пюре';
+        $position->price = 75;
+        $position->weight = '150 гр.';
+        $position->group_name = 'Второе';
+        $position->menu_id = 1;
+
+        $order = new \App\Domain\Order\Order();
+        $order->load([
+            'user_name' => 'Вован',
+            'positions' => [$position->getAll()],
+            'comment' => 'пюрешку без соли!',
+        ]);
+
+        $db = Database::get();
+        $res = (new Storage($db))->save($order);
+
+        if ($res !== true) {
+            echo json_encode(['success' => false, 'message' => $res]);
+        } elseif (rand(0, 1) == 1) {
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Не удалось сохранить заказ']);
