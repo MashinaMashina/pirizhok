@@ -104,8 +104,36 @@ document.addEventListener("DOMContentLoaded", function () {
             return
         }
 
-        let positions = ''
+        let orderModal = bootstrap.Modal.getInstance(document.getElementById('orderModal'));
+        let successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        
+        let positions = getPositions();
+        let username = document.querySelector('#username').value;
 
+        let form = new FormData();
+        form.append('csrf', csrf);
+        form.append('companyId', companyId);
+        form.append('positions', JSON.stringify(positions));
+        form.append('username', username);
+
+        fetch('/order/create/', {
+            method: 'POST',
+            body: form
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if(!data.success){
+                alert(data.message);
+            }
+            else {
+                let fields = document.querySelectorAll('.js-item-count');
+                fields.forEach(field => {
+                    field.value = 0;
+                });
+                orderModal.hide();
+                successModal.show();
+            }
+        })
     })
 })
 
