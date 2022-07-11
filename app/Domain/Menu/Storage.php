@@ -55,8 +55,9 @@ class Storage
         $menus = [];
         foreach ($result as $item) {
             $menu = new Menu();
-            $menu->date = $item['date'];
-            $menu->id = $item['id'];
+            foreach ($item as $key => $val) {
+                $menu->{$key} = $val;
+            }
             $menu->positions = [];
 
             $menus[$item['id']] = $menu;

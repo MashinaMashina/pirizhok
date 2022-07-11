@@ -30,12 +30,13 @@ CREATE TABLE IF NOT EXISTS orders
 (
     id            INT(11) UNSIGNED AUTO_INCREMENT,
     company_id    INT(11) UNSIGNED,
-    user_name          VARCHAR(255),
+    user_name     VARCHAR(255),
     positions     TEXT,
     comment       VARCHAR(255),
     admin_comment VARCHAR(255),
     ip            VARCHAR(50) NOT NULL,
     created_at    INT(11) UNSIGNED,
     updated_at    INT(11) UNSIGNED,
+    menu_id       INT(11) UNSIGNED,
     PRIMARY KEY (id)
 );
