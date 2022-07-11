@@ -26,12 +26,18 @@ class Router {
         $uri = ($pos ? substr($_SERVER['REQUEST_URI'], 0, $pos) : $_SERVER['REQUEST_URI']);
         $uri = trim($uri, '/');
         $uri = "/$uri/";
+        $uri = str_replace('//', '/', $uri);
 
         foreach ($this->routes as $k => $callback) {
-            if (strpos($uri, $k) === 0) {
-                $callback();
-                return;
+            $k = str_replace(':num', '([0-9]+?)', $k);
+            $pattern = "#^$k$#";
+
+            if (preg_match($pattern, $uri, $matches)) {
+                $callback($matches);
+                return true;
             }
         }
+
+        return false;
     }
 }

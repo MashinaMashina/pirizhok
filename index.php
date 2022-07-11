@@ -15,4 +15,7 @@ if ($warnings = \App\Support\Security::requestWarning()) {
 
 $router = new \App\Support\Router();
 $router->load(ROOT_DIR . '/config/routes.php');
-$router->run();
+if (! $router->run()) {
+    http_response_code(404);
+    echo '404 not found';
+}
