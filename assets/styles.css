@@ -8,8 +8,6 @@
     min-height: 200px;
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("img/top.jpg");
 }
-@media (min-width: 768px) {
-    .mb-3-sm {
-        margin-bottom: 1rem!important;
-    }
+.menu-item {
+    border-bottom-color: #f3f3f3!important;
 }

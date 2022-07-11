@@ -56,8 +56,13 @@ class Storage
             $menu = new Menu();
             $menu->date = $item['date'];
             $menu->id = $item['id'];
-            $menus[$item['id']] = $menu;
             $menu->positions = [];
+
+            $menus[$item['id']] = $menu;
+        }
+
+        if (! count($menus)) {
+            return [];
         }
 
         $query = $builder->select()

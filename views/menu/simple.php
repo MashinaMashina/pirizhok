@@ -4,12 +4,7 @@
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
-            <div class="p-4 p-md-5 my-4 text-white rounded bg-dark top-img top-img">
-                <div class="col-md-8 px-0">
-                    <h1 class="display-4">Тут можно написать какой-то заголовок страницы</h1>
-                    <p class="lead my-3">Тут можно написать какое-то длинное описание. Информация.  Информация.  Информация.  Информация.  Информация.  Информация. </p>
-                </div>
-            </div>
+            <?$this->render('banner')?>
 
             <h2 class="mt-5">Ваша компания: ЦИТ Барс</h2>
 
@@ -20,9 +15,9 @@
                 foreach ($menu->positions as $value) {
                     if($value->group_name != $group_name){
                         $group_name = $value->group_name;
-                        echo "<h4>$value->group_name</h4>";
+                        echo "<h4 class='mt-4'>$value->group_name</h4>";
                     }
-                    echo "<div class='menu-item js-menu-item row'>
+                    echo "<div class='menu-item js-menu-item row border-bottom'>
                             <div class='col-sm-4 col-md-4  text-center text-md-start '>
                                 <span class='fw-bold align-middle js-item-name'>$value->name</span>
                             </div>
@@ -40,7 +35,6 @@
                                 </div>
                             </div>
                         </div>
-                        <hr/>
                 ";
                 }
                 ?>

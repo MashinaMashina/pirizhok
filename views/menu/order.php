@@ -1,15 +1,12 @@
-<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]);
-
-?>
+<?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]); ?>
+    <script>
+        var csrf = '<?=\App\Support\Security::csrf()?>';
+        var companyId = 0;
+    </script>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
-            <div class="p-4 p-md-5 my-4 text-white rounded bg-dark top-img top-img">
-                <div class="col-md-8 px-0">
-                    <h1 class="display-4">Тут можно написать какой-то заголовок страницы</h1>
-                    <p class="lead my-3">Тут можно написать какое-то длинное описание. Информация.  Информация.  Информация.  Информация.  Информация.  Информация. </p>
-                </div>
-            </div>
+            <?$this->render('banner')?>
 
             <h2 class="mt-5">Ваша компания: ЦИТ Барс</h2>
 
@@ -104,14 +101,13 @@
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-success js-open-cart" data-bs-toggle="modal" data-bs-target="#exampleModal">Оформить заказ</button>
+                    <button type="button" class="btn btn-success js-open-cart" data-bs-toggle="modal" data-bs-target="#orderModal">Оформить заказ</button>
                 </div>
             </div>
         </div>
     </footer>
 
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -124,10 +120,7 @@
                         <input type="text" class="form-control" id="username" placeholder="Иван Ж.">
                     </div>
 
-
-                    <div class="js-cart-positions">
-
-                    </div>
+                    <div class="js-cart-positions"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>

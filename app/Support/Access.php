@@ -8,7 +8,7 @@ class Access
 
     protected $authorized = false;
 
-    public function __construct()
+    protected function __construct()
     {
         include ROOT_DIR . '/config/admin.php';
 

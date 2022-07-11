@@ -6,5 +6,4 @@ use App\Domain\Model;
 
 class Menu extends Model
 {
-
 }
