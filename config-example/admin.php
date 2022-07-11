@@ -1,0 +1,3 @@
+<?php
+
+$accessKey = 'any-key';
