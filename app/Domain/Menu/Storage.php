@@ -33,6 +33,26 @@ class Storage
         return $menu[0] ?? false;
     }
 
+    public function getMenuInfo($menuId)
+    {
+        $builder = new MySqlBuilder();
+
+        $query = $builder->select()
+            ->setTable('menu');
+        $query->where()->equals('id', $menuId);
+
+        $stmt = $this->conn->prepare($builder->write($query));
+        $stmt->execute($builder->getValues());
+        $result = $stmt->fetch();
+
+        $menu = new Menu();
+        foreach ($result as $k => $v) {
+            $menu->{$k} = $v;
+        }
+
+        return $menu;
+    }
+
     public function getMenu($filter = [])
     {
         $builder = new MySqlBuilder();

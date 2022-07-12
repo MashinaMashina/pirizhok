@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
             tpl = tpl.replaceAll("%groupId%", event.target.dataset.num)
             tpl = tpl.replaceAll("%posId%", posIterator)
 
+            if (typeof event.target.dataset.order != 'undefined') {
+                tpl = tpl.replaceAll("%orderId%", event.target.dataset.order)
+            }
+
             let div = document.createElement('div')
             div.innerHTML = tpl
 
