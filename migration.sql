@@ -33,10 +33,11 @@ CREATE TABLE IF NOT EXISTS orders
     user_name     VARCHAR(255),
     positions     TEXT,
     comment       VARCHAR(255),
-    admin_comment VARCHAR(255),
     ip            VARCHAR(50) NOT NULL,
     created_at    INT(11) UNSIGNED,
     updated_at    INT(11) UNSIGNED,
     menu_id       INT(11) UNSIGNED,
+    admin_comment VARCHAR(255),
+    confirm       INT(11) UNSIGNED NOT NULL,
     PRIMARY KEY (id)
 );

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order;
 
+use App\Domain\Menu\Position;
 use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
 
 class Storage
@@ -14,6 +15,42 @@ class Storage
         $this->conn = $conn;
     }
 
+    public function getActive()
+    {
+        $sql = 'SELECT
+            orders.id,
+            orders.menu_id,
+            m.date,
+            min(confirm) as confirm,
+            max(orders.updated_at) as updated_at
+        FROM orders
+        LEFT JOIN menu m on orders.menu_id = m.id 
+        GROUP BY `menu_id`
+        ORDER BY m.date DESC';
+
+        return $this->orderByStmt($this->conn->query($sql));
+    }
+
+    public function getByMenuId($menuId)
+    {
+        $builder = new MySqlBuilder();
+
+        $query = $builder->select()
+            ->setTable('orders');
+        $query->where()
+            ->equals('menu_id', $menuId);
+
+        $query->leftJoin('companies', 'company_id', 'id', ['company_name' => 'name']);
+        $query->orderBy('company_id');
+
+        $sql = $builder->write($query);
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($builder->getValues());
+
+        return $this->orderByStmt($stmt);
+    }
+
     public function save($order)
     {
         if (empty($order->positions)) {
@@ -21,14 +58,17 @@ class Storage
             return false;
         }
 
-        $values = [
-            'company_id' => $order->company_id ?? 0,
-            'user_name' => $order->user_name ?? '',
-            'positions' => json_encode($order->positions),
-            'comment' => $order->comment ?? '',
-            'ip' => $order->ip ?? $_SERVER['REMOTE_ADDR'],
-            'updated_at' => time(),
-        ];
+        $values = $order->getAll();
+        $values['updated_at'] = time();
+
+        if (isset($order->positions)) {
+            $positions = [];
+            foreach ($order->positions as $position) {
+                $positions[] = $position->getAll();
+            }
+
+            $values['positions'] = json_encode($positions);
+        }
 
         $builder = new MySqlBuilder();
 
@@ -37,6 +77,7 @@ class Storage
             $query = $builder->insert();
         } else {
             $query = $builder->update();
+            $query->where()->equals('id', $order->id);
         }
 
         $query = $query
@@ -50,5 +91,34 @@ class Storage
         }
 
         return true;
+    }
+
+    protected function orderByStmt($stmt)
+    {
+        $result = [];
+        while ($row = $stmt->fetch()) {
+            $order = new Order();
+
+            if (!empty($row['positions'])) {
+                $positions = json_decode($row['positions'], true);
+
+                $row['positions'] = [];
+                foreach ($positions as $position) {
+                    $pos = new Position();
+                    foreach ($position as $k => $v) {
+                        $pos->{$k} = $v;
+                    }
+                    $row['positions'][] = $pos;
+                }
+            }
+
+            foreach ($row as $k => $v) {
+                $order->{$k} = $v;
+            }
+
+            $result[] = $order;
+        }
+
+        return $result;
     }
 }
