@@ -14,19 +14,25 @@ class Home
 
         $companyStorage = new \App\Domain\Company\Storage(Database::get());
 
+        $infoStorage = new \App\Domain\Info\Storage(Database::get());
+        $info = $infoStorage->getInfo();
+
         $company = $companyStorage->getByCode($_GET['company'] ?? '');
 
         $view = new View();
         if (!$menu) {
             $view->render('menu/empty', [
                 'message' => 'Нет меню на текущую дату',
+                'info' => $info,
             ]);
         } elseif (!$company or $menu->can_order == 0) {
             $view->render('menu/simple', [
                 'menu' => $menu,
+                'info' => $info,
             ]);
         } else {
             $view->render('menu/order', [
+                'info' => $info,
                 'company' => $company,
                 'menu' => $menu,
             ]);

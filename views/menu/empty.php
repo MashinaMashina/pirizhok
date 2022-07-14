@@ -4,7 +4,9 @@
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
-            <?$this->render('banner')?>
+            <?$this->render('banner', [
+                'info' => $info,
+            ]);?>
 
             <div class="menu my-5">
                 <h2><?=$message ?? 'Меню не доступно'?></h2>

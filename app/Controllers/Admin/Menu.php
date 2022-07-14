@@ -55,7 +55,9 @@ class Menu
                 if($menuDate){
                     $message = 'Меню с такой датой уже существует';
                 } else {
-                    $menu->date = $_POST['date'];
+                    if(!empty($_POST['date'])){
+                        $menu->date = $_POST['date'];
+                    }
                     $menu->can_order = empty($_POST['can_order']) ? 0 : 1;
                     $positions = [];
                     foreach ($_POST['groups'] as $group) {
