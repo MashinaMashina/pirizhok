@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS menu
     date       DATE,
     created_at INT(11) UNSIGNED,
     updated_at INT(11) UNSIGNED,
+    can_order TINYINT(1) NOT NULL,
     PRIMARY KEY (id)
 );
 

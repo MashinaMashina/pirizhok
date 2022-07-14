@@ -2,39 +2,78 @@
 
 namespace App\Controllers\Admin;
 
-use App\Domain\Info\Storage;
+use App\Domain\Company\Storage;
 use App\Views\View;
+use App\Database\Database;
+use App\Support\Access;
 
 class Company
 {
     public static function home()
+    {
+    if (! Access::getInstance()->isAuthorized()) {
+            echo 'not authorized';
+            return;
+        }
+
+        $storage = new Storage(Database::get());
+        
+        $companies = $storage->get();
+
+        (new View())->render('admin/company/list', [
+            'csrf' => \App\Support\Security::csrf(),
+            'companies' => $companies,
+        ]);
+    }
+
+    public static function edit($params)
     {
         if (! \App\Support\Access::getInstance()->isAuthorized()) {
             echo 'not authorized';
             return;
         }
 
-        $storage = new Storage();
         $message = '';
+        $storage = new Storage(Database::get());
 
-        if (count($_POST)) {
-            $info = new \App\Domain\Info\Info();
-            $info->title = $_POST['title'] ?? '';
-            $info->description = $_POST['description'] ?? '';
+        $company = false;
+        if(!empty($params[1])){
+            $id = (int) $params[1];
+            $company = $storage->getById($id);
 
-            if ($storage->saveInfo($info)) {
-                $message = 'Сохранено';
-            } else {
-                $message = 'Ошибка сохранения';
+            if(!$company) {
+                echo 'company not found';
+                return;
             }
         } else {
-            $info = $storage->getInfo();
+            $company = new \App\Domain\Company\Company();
         }
 
-        (new View())->render('admin/company', [
-            'csrf' => \App\Support\Security::csrf(),
-            'info' => $info,
+        
+
+        if (count($_POST)) {
+            $company->name = $_POST['company'] ?? '';
+            if (empty($_POST['company'])){
+                $message = 'Нельзя сохранить пустую компанию';
+            } else {
+                $code = md5($_POST['company']);
+                $findCompany = $storage->getByCode($code);
+
+                if ($findCompany and $findCompany->id !== $company->id) {
+                    $message = 'Такая компания уже существует';
+                } else {
+                    $message = "Сохранено успешно";
+                    
+                    $company->code = $code;
+                    $storage->save($company);
+                }
+            }
+        }
+        
+        (new View())->render('admin/company/edit', [
             'message' => $message,
+            'company' => $company,
+            'csrf' => \App\Support\Security::csrf(),
         ]);
     }
 }

@@ -8,7 +8,7 @@
                 <li><a href="<?=BASE_DIR?>admin">Панель администратора</a></li>
             </ul>
 
-            <b><?=$message?></b>
+            <b><?=$message;?></b>
             <form action="" method="post" class="form-width">
                 <input type="hidden" name="csrf" value="<?=$csrf?>">
                 <div class="mb-3">
@@ -16,11 +16,19 @@
                     <input 
                         type="text" 
                         class="form-control" 
-                        name="name"
+                        name="company"
                         id="info-title" 
-                        placeholder="Столовая Пирожок" 
-                        value=""
+                        placeholder="Название компании" 
+                        value="<?=$company->name?>"
                     />
+                    <? if (!empty($company->id)) : ?>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            readonly
+                            value="http://<?=$_SERVER['HTTP_HOST']?>/?company=<?=$company->code?>" 
+                        />
+                    <? endif; ?>
                 </div>
                 <input type="submit" value="Сохранить" class="btn btn-primary">
             </form>

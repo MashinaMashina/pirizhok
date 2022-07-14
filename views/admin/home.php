@@ -8,6 +8,7 @@
                 <li><a href="<?=BASE_DIR?>admin/menu">Управление меню</a></li>
                 <li><a href="<?=BASE_DIR?>admin/order">Управление заказами</a></li>
                 <li><a href="<?=BASE_DIR?>admin/info">Управление информацией</a></li>
+                <li><a href="<?=BASE_DIR?>admin/company">Управление компаниями</a></li>
             </ul>
         </div>
     </main>

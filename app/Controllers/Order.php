@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Database\Database;
 use App\Domain\Menu\Position;
 use App\Domain\Order\Storage;
+use App\Views\View;
 
 class Order
 {
@@ -43,6 +44,25 @@ class Order
 
     public static function view()
     {
+        $storage = new Storage(Database::get());
 
+        $code = $_GET['company'];
+
+        $companyStorage = new \App\Domain\Company\Storage(Database::get());
+        $company = $companyStorage->getByCode($code);
+
+        $orders = $storage->getByCompanyId($company->id);
+
+        foreach($orders as $val){
+            foreach($val as $key => $value){
+                echo $key. ": " . $value." ";
+            }
+            echo "<br/>";
+        }
+
+        (new View())->render('orders', [
+            'orders' => $orders,
+            'csrf' => \App\Support\Security::csrf(),
+        ]);
     }
 }

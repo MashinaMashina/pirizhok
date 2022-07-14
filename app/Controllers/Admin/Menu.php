@@ -50,9 +50,17 @@ class Menu
             if (empty($_POST['groups'])) {
                 $message = 'Нельзя сохранить пустое меню';
             } else {
+                $menu->can_order = empty($_POST['can_order']) ? 0 : 1;
+
                 $positions = [];
                 foreach ($_POST['groups'] as $group) {
+                    if(trim($group['name']) == ""){
+                        $group['name'] = "Без группы";
+                    }
                     foreach ($group['positions'] as $position) {
+                        if(trim($position['name']) == ""){
+                            continue;
+                        }
                         $pos = new Position();
                         $pos->group_name = $group['name'] ?? '';
                         $pos->name = $position['name'] ?? '';

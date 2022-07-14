@@ -31,6 +31,24 @@ class Storage
         return $this->orderByStmt($this->conn->query($sql));
     }
 
+    public function getByCompanyId($id)
+    {
+        $builder = new MySqlBuilder();
+
+        $sql = $builder->select()->setTable('orders');
+        $sql->where()->equals('company_id', $id);
+        $sql->join('menu', 'menu_id', 'id')
+            ->where()
+            ->greaterThanOrEqual('date', '2022-07-13');
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($builder->getValues());
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getByMenuId($menuId)
     {
         $builder = new MySqlBuilder();
