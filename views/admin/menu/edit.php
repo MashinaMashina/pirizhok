@@ -36,14 +36,14 @@
 
     <template id="menu-group">
         <?$this->render('admin/menu/templates/group', [
-            'groupId' => '%group%',
+            'groupId' => '%groupId%',
         ])?>
     </template>
 
     <template id="menu-position">
         <?$this->render('admin/menu/templates/position', [
-            'groupId' => '%group%',
-            'positionId' => '%pos%',
+            'groupId' => '%groupId%',
+            'positionId' => '%posId%',
         ])?>
     </template>
 
