@@ -7,7 +7,9 @@
     <!-- Begin page content -->
     <main class="flex-shrink-0">
         <div class="container main-container content-container">
-            <?$this->render('banner')?>
+            <?$this->render('banner', [
+                'info' => $info,
+            ]);?>
 
             <h2 class="mt-5">Ваша компания: <?=htmlspecialchars($company->name)?></h2>
 

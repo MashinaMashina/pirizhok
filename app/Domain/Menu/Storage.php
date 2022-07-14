@@ -134,10 +134,13 @@ class Storage
     protected function saveMenu($menu)
     {
         $values = [
-            'date' => $menu->date ?? '',
             'updated_at' => time(),
             'can_order' => $menu->can_order,
         ];
+
+        if(!empty($menu->date)){
+            $values['date'] = $menu->date;
+        }
 
         $builder = new MySqlBuilder();
 
