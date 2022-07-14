@@ -29,6 +29,7 @@ class Home
             $view->render('menu/simple', [
                 'menu' => $menu,
                 'info' => $info,
+                'company' => $company,
             ]);
         } else {
             $view->render('menu/order', [

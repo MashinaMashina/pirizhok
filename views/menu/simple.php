@@ -8,10 +8,11 @@
                     'info' => $info,
                 ]);?>
 
-            <h2 class="mt-5">Ваша компания: ЦИТ Барс</h2>
+            <? if(!empty($company->name)): ?>
+                <h2 class="mt-5">Ваша компания: <?=htmlspecialchars($company->name)?></h2>
+            <?endif;?>
 
             <div class="menu my-5">
-
                 <?
                 $group_name = "";
                 foreach ($menu->positions as $value) {
