@@ -136,6 +136,7 @@ class Storage
         $values = [
             'date' => $menu->date ?? '',
             'updated_at' => time(),
+            'can_order' => $menu->can_order,
         ];
 
         $builder = new MySqlBuilder();
@@ -145,6 +146,7 @@ class Storage
             $query = $builder->insert();
         } else {
             $query = $builder->update();
+            $query->where()->equals('id', $menu->id);
         }
 
         $query = $query
