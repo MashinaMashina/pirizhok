@@ -1,8 +1,7 @@
 <?php $this->header(['styles' => [['href' => BASE_DIR . 'assets/styles.css']]]); ?>
     <script>
         var csrf = '<?=\App\Support\Security::csrf()?>';
-        var companyId = <?=$company->id?>;
-        var menuId = <?=$menu->id?>;
+        var companyId = <?=$company->id?>
     </script>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
@@ -13,48 +12,43 @@
 
             <div class="menu my-5">
 
-                <?
-                $group_name = "";
-                foreach ($menu->positions as $value) {
-                    if($value->group_name != $group_name){
-                        $group_name = $value->group_name;
-                        echo "<h4>$value->group_name</h4>";
-                    }
-                    echo "<div class='menu-item js-menu-item row'>
-                    <div class='col-sm-12 col-md-4 mb-3 text-center text-md-start '>
-                        <span data-group='$value->group_name' class='fw-bold align-middle js-item-name'>$value->name</span>
-                    </div>
-                    <div class='col-sm-12 col-md-2'>
-                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
-                            <div class='col-auto'>
-									<span class='form-text'>
-									  <span class='js-item-price'>$value->price</span> р.
-									</span>
-                            </div><div class='col-auto'>
-									<span class='form-text js-item-measure'>
-                    за $value->weight 
-									</span>
+            <? foreach($orders as $order) : ?>
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <h5>Заказчик: <?=$order->user_name?></h5>
+                    <? foreach($order->positions as $pos): ?>
+                        <div class='menu-item js-menu-item row'>
+                            <div class='col-sm-5 col-md-3 mb-3 text-center text-md-start '>
+                                <span class='fw-bold align-middle js-item-name'><?=$pos->name?></span>
+                            </div>
+                            <div class='col-sm-4 col-md-2'>
+                                <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                                    <div class='col-auto'>
+                                            <span class='form-text'>
+                                            <span class='js-item-price'><?=$pos->price?></span> р.
+                                            </span>
+                                    </div><div class='col-auto'>
+                                            <span class='form-text js-item-measure'>
+                            <?=$pos->weight?> 
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-3 col-md-2'>
+                                <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                                    <div class='col-auto'>
+                                            <span class='form-text'>
+                                                <?=$pos->count?> порц.
+                                            </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class='col-sm-12 col-md-6'>
-                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
-                            <div class='col-auto col-4'>
-                                <input type='number' class='form-control js-item-count' placeholder='0'>
-                            </div>
-                            <div class='col-auto'>
-									<span class='form-text'>
-                    порций
-									</span>
-                            </div>
-                            <div class='col-auto'>
-                                <button type='button' class='btn btn-primary js-to-cart'>В корзину</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>";
-                }
-                ?>
+                    <? endforeach ; ?>
+                    <? if($order->confirm == 1) : ?>
+                        <p class="text-success">Заказ подтвержден</p>
+                    <? endif ; ?>
+                </div>
+            <? endforeach; ?>
             </div>
         </div>
     </main>
