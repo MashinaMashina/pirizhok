@@ -17,6 +17,7 @@
                 <li><a href="<?=BASE_DIR?>admin/menu">Меню</a></li>
             </ul>
 
+            <b><?=$message?></b>
             <form action="" method="post" class="form-width">
                 <input type="hidden" name="csrf" value="<?=$csrf?>">
                 <div class="form-check form-switch">

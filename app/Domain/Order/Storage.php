@@ -35,18 +35,18 @@ class Storage
     {
         $builder = new MySqlBuilder();
 
+        $today = date('Y-m-d');
+
         $sql = $builder->select()->setTable('orders');
         $sql->where()->equals('company_id', $id);
         $sql->join('menu', 'menu_id', 'id')
             ->where()
-            ->greaterThanOrEqual('date', '2022-07-13');
+            ->greaterThanOrEqual('date', $today);
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($builder->getValues());
 
-        $result = $stmt->fetchAll();
-
-        return $result;
+        return $this->orderByStmt($stmt);
     }
 
     public function getByMenuId($menuId)

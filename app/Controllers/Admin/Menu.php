@@ -43,36 +43,44 @@ class Menu
             }
         } else {
             $menu = new \App\Domain\Menu\Menu();
-            $menu->date = date('Y-m-d');
         }
-
         if (count($_POST)) {
             if (empty($_POST['groups'])) {
                 $message = 'Нельзя сохранить пустое меню';
             } else {
-                $menu->can_order = empty($_POST['can_order']) ? 0 : 1;
-
-                $positions = [];
-                foreach ($_POST['groups'] as $group) {
-                    if(trim($group['name']) == ""){
-                        $group['name'] = "Без группы";
-                    }
-                    foreach ($group['positions'] as $position) {
-                        if(trim($position['name']) == ""){
-                            continue;
+                $menuDate = false;
+                if(!empty($_POST['date'])){
+                    $menuDate = $storage->getMenuByDate($_POST['date']);
+                }
+                if($menuDate){
+                    $message = 'Меню с такой датой уже существует';
+                } else {
+                    $menu->date = $_POST['date'];
+                    $menu->can_order = empty($_POST['can_order']) ? 0 : 1;
+                    $positions = [];
+                    foreach ($_POST['groups'] as $group) {
+                        if(trim($group['name']) == ""){
+                            $group['name'] = "Без группы";
                         }
-                        $pos = new Position();
-                        $pos->group_name = $group['name'] ?? '';
-                        $pos->name = $position['name'] ?? '';
-                        $pos->price = $position['price'] ?? '';
-                        $pos->weight = $position['weight'] ?? '';
-
-                        $positions[] = $pos;
+                        foreach ($group['positions'] as $position) {
+                            if(trim($position['name']) == ""){
+                                continue;
+                            }
+                            $pos = new Position();
+                            $pos->group_name = $group['name'] ?? '';
+                            $pos->name = $position['name'] ?? '';
+                            $pos->price = $position['price'] ?? '';
+                            $pos->weight = $position['weight'] ?? '';
+                            $positions[] = $pos;
+                        }
+                    }
+                    $menu->positions = $positions;
+                    if($storage->save($menu)) {
+                        $message = 'Сохранено';
+                    } else {
+                        $message = 'Ошибка' . $storage->error;
                     }
                 }
-
-                $menu->positions = $positions;
-                $storage->save($menu);
             }
         }
 

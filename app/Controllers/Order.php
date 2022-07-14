@@ -16,18 +16,28 @@ class Order
             die('invalid request method');
         }
 
-        $position = new Position();
-        $position->name = 'Картофельное пюре';
-        $position->price = 75;
-        $position->weight = '150 гр.';
-        $position->group_name = 'Второе';
-        $position->menu_id = 1;
+        
+        $positionsPost = json_decode($_POST['positions'] ?? "[]", true);
+
+        $positions = [];
+
+        foreach($positionsPost as $pos){
+            $position = new Position();
+            $position->name = $pos['name'];
+            $position->price = $pos['price'];
+            $position->weight = $pos['measure'];
+            $position->group_name = $pos['group_name'];
+            $position->count = $pos['count'];
+            $positions[] = $position;
+        }
 
         $order = new \App\Domain\Order\Order();
+        
         $order->load([
-            'user_name' => 'Вован',
-            'positions' => [$position->getAll()],
-            'comment' => 'пюрешку без соли!',
+            'user_name' => $_POST['username'],
+            'positions' => $positions,
+            'company_id' => $_POST['companyId'],
+            'menu_id' => $_POST['menu_id']
         ]);
 
         $storage = new Storage(Database::get());
@@ -35,10 +45,8 @@ class Order
 
         if (!$res) {
             echo json_encode(['success' => false, 'message' => $storage->error]);
-        } elseif (rand(0, 1) == 1) {
-            echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Не удалось сохранить заказ']);
+            echo json_encode(['success' => true]);
         }
     }
 
@@ -53,14 +61,8 @@ class Order
 
         $orders = $storage->getByCompanyId($company->id);
 
-        foreach($orders as $val){
-            foreach($val as $key => $value){
-                echo $key. ": " . $value." ";
-            }
-            echo "<br/>";
-        }
-
         (new View())->render('orders', [
+            'company' => $company,
             'orders' => $orders,
             'csrf' => \App\Support\Security::csrf(),
         ]);
