@@ -38,7 +38,6 @@ class Company
         $message = '';
         $storage = new Storage(Database::get());
 
-        $company = false;
         if(!empty($params[1])){
             $id = (int) $params[1];
             $company = $storage->getById($id);
@@ -51,8 +50,6 @@ class Company
             $company = new \App\Domain\Company\Company();
         }
 
-        
-
         if (count($_POST)) {
             $company->name = $_POST['company'] ?? '';
             if (empty($_POST['company'])){
@@ -64,10 +61,17 @@ class Company
                 if ($findCompany and $findCompany->id !== $company->id) {
                     $message = 'Такая компания уже существует';
                 } else {
-                    $message = "Сохранено успешно";
-                    
                     $company->code = $code;
-                    $storage->save($company);
+                    if ($storage->save($company)) {
+                        $message = "Сохранено успешно";
+
+                        if (empty($params[1])) {
+                            header('Location: ' . BASE_DIR . 'admin/company/edit/' . $company->id, true, 302);
+                            return;
+                        }
+                    } else {
+                        $message = 'Ошибка' . $storage->error;
+                    }
                 }
             }
         }

@@ -109,7 +109,13 @@ class Storage
                 $this->error = $stmt->errorInfo();
                 return false;
             }
-    
+
+            $companyId = $company->id;
+            if (empty($companyId)) {
+                $companyId = $this->conn->lastInsertId();
+            }
+            $company->id = $companyId;
+
             return true;
     }
 }
