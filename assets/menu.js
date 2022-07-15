@@ -135,6 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 orderModal.hide();
                 successModal.show();
+
+                recalculateCart();
             }
         })
     })

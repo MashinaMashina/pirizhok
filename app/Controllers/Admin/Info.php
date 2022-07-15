@@ -10,6 +10,7 @@ class Info
     public static function home()
     {
         if (! \App\Support\Access::getInstance()->isAuthorized()) {
+            http_response_code(401);
             echo 'not authorized';
             return;
         }

@@ -10,14 +10,10 @@ class Home
     public static function home()
     {
         $db = Database::get();
+
         $menu = (new Storage($db))->getMenuByDate();
-
-        $companyStorage = new \App\Domain\Company\Storage(Database::get());
-
-        $infoStorage = new \App\Domain\Info\Storage(Database::get());
-        $info = $infoStorage->getInfo();
-
-        $company = $companyStorage->getByCode($_GET['company'] ?? '');
+        $info = (new \App\Domain\Info\Storage)->getInfo();
+        $company = (new \App\Domain\Company\Storage($db))->getByCode($_GET['company'] ?? '');
 
         $view = new View();
         if (!$menu) {

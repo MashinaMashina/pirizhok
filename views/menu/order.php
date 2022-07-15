@@ -22,41 +22,55 @@
                         $group_name = $value->group_name;
                         echo "<h4>$value->group_name</h4>";
                     }
-                    echo "<div class='menu-item js-menu-item row'>
-                    <div class='col-sm-12 col-md-4 mb-3 text-center text-md-start '>
-                        <span data-group='$value->group_name' class='fw-bold align-middle js-item-name'>$value->name</span>
-                    </div>
-                    <div class='col-sm-12 col-md-2'>
-                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
-                            <div class='col-auto'>
+                    ?>
+                    <div class='menu-item js-menu-item row'>
+                        <div class='col-sm-12 col-md-4 mb-3 text-center text-md-start '>
+                            <span data-group='$value->group_name' class='fw-bold align-middle js-item-name'>
+                                <?=htmlentities($value->name)?>
+                            </span>
+                        </div>
+                        <div class='col-sm-12 col-md-2'>
+                            <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                                <div class='col-auto'>
 									<span class='form-text'>
-									  <span class='js-item-price'>$value->price</span> р.
+									  <span class='js-item-price'><?=$value->price?></span> р.
 									</span>
-                            </div><div class='col-auto'>
+                                </div>
+                                <div class='col-auto'>
 									<span class='form-text js-item-measure'>
-                    за $value->weight 
+                                        <?=htmlentities($value->weight)?>
 									</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class='col-sm-12 col-md-6'>
-                        <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
-                            <div class='col-auto col-4'>
-                                <input type='number' class='form-control js-item-count' placeholder='0'>
-                            </div>
-                            <div class='col-auto'>
+                        <div class='col-sm-12 col-md-6'>
+                            <div class='row g-3 align-items-center justify-content-center justify-content-md-end '>
+                                <div class='col-auto col-4'>
+                                    <input type='number' class='form-control js-item-count' placeholder='0'>
+                                </div>
+                                <div class='col-auto'>
 									<span class='form-text'>
-                    порций
+                                        порций
 									</span>
-                            </div>
-                            <div class='col-auto'>
-                                <button type='button' class='btn btn-primary js-to-cart'>В корзину</button>
+                                </div>
+                                <div class='col-auto'>
+                                    <button type='button' class='btn btn-primary js-to-cart'>В корзину</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>";
+                    <?
                 }
                 ?>
+
+                <? if (!empty($company->code)): ?>
+                    <div class="my-5 text-center">
+                        <a href="<?=BASE_DIR?>orders?company=<?=htmlentities($company->code)?>" class="btn btn-primary">
+                            Открыть заказы
+                        </a>
+                    </div>
+                <? endif; ?>
+
             </div>
         </div>
     </main>

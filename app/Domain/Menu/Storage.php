@@ -67,6 +67,8 @@ class Storage
                 ->end();
         }
 
+        $query->orderBy('date', OrderBy::DESC);
+
         $sql = $builder->writeFormatted($query);
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(Database::values($builder));

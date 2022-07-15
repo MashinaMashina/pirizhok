@@ -5,7 +5,7 @@
                    name="groups[<?=$groupId?>][positions][<?=$positionId?>][name]"
                    value="<?=htmlentities($positionName ?? '')?>">
         </div>
-        <div class="col-2">
+        <div class="col-4">
             <input type="text" placeholder="Выход" class="form-control"
                    name="groups[<?=$groupId?>][positions][<?=$positionId?>][weight]"
                    value="<?=htmlentities($positionWeight ?? '')?>">

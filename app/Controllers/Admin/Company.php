@@ -12,6 +12,7 @@ class Company
     public static function home()
     {
     if (! Access::getInstance()->isAuthorized()) {
+            http_response_code(401);
             echo 'not authorized';
             return;
         }
@@ -29,6 +30,7 @@ class Company
     public static function edit($params)
     {
         if (! \App\Support\Access::getInstance()->isAuthorized()) {
+            http_response_code(401);
             echo 'not authorized';
             return;
         }

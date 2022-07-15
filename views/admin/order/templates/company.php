@@ -13,7 +13,7 @@
             ])?>
         <?endforeach;?>
         <div class="float-end">
-            <b>Итого: <?=$company->sum?> руб.</b>
+            <b>Итого: <?=$company->orders_sum?> руб.</b>
         </div>
         <div class="clearfix"></div>
     <?endif;?>

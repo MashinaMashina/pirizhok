@@ -54,16 +54,22 @@ class Order
     {
         $storage = new Storage(Database::get());
 
-        $code = $_GET['company'];
+        $code = $_GET['company'] ?? '-';
 
-        $companyStorage = new \App\Domain\Company\Storage(Database::get());
-        $company = $companyStorage->getByCode($code);
+        $company = (new \App\Domain\Company\Storage(Database::get()))->getByCode($code);
+        $info = (new \App\Domain\Info\Storage)->getInfo();
 
-        $orders = $storage->getByCompanyId($company->id);
+        if (empty($company)) {
+            http_response_code(400);
+            echo 'Компания не найдена';
+            return;
+        }
+
+        $company->orders = $storage->getByCompanyId($company->id);
 
         (new View())->render('orders', [
             'company' => $company,
-            'orders' => $orders,
+            'info' => $info,
             'csrf' => \App\Support\Security::csrf(),
         ]);
     }

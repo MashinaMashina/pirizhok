@@ -6,12 +6,19 @@ use App\Database\Database;
 use App\Domain\Company\Company;
 use App\Domain\Menu\Position;
 use App\Domain\Order\Storage;
+use App\Support\Access;
 use App\Views\View;
 
 class Order
 {
     public static function home()
     {
+        if (! Access::getInstance()->isAuthorized()) {
+            http_response_code(401);
+            echo 'not authorized';
+            return;
+        }
+
         $storage = new Storage(Database::get());
 
         $orders = $storage->getActive();
@@ -23,6 +30,12 @@ class Order
 
     public static function edit($params)
     {
+        if (! Access::getInstance()->isAuthorized()) {
+            http_response_code(401);
+            echo 'not authorized';
+            return;
+        }
+
         if (empty($params[1])) {
             die('invalid menu id');
         }

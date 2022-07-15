@@ -11,7 +11,7 @@
             <a href="<?=BASE_DIR?>admin/menu/edit" class="btn btn-success btn-sm mb-3">Добавить меню</a><br>
 
             <?foreach ($menus as $menu):?>
-                <a href="<?=BASE_DIR?>admin/menu/edit/<?=intval($menu->id)?>"><?=htmlentities($menu->date)?></a>
+                <a href="<?=BASE_DIR?>admin/menu/edit/<?=intval($menu->id)?>">Меню <?=htmlentities($menu->date)?></a>
                 <span class="text-muted">обновлено <?=date('H:i d.m.Y', $menu->updated_at ?? 0)?></span><br>
             <?endforeach;?>
         </div>

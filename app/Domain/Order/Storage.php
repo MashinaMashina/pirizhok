@@ -41,6 +41,7 @@ class Storage
         $sql = $builder->select()->setTable('orders');
         $sql->where()->equals('company_id', $id);
         $sql->join('menu', 'menu_id', 'id')
+            ->setColumns(['date'])
             ->where()
             ->greaterThanOrEqual('date', $today);
 
