@@ -2,6 +2,7 @@
 
 namespace App\Domain\Company;
 
+use App\Database\Database;
 use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
 
 class Storage
@@ -23,7 +24,7 @@ class Storage
         $sql = $builder->write($query);
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
 
         $result = $stmt->fetchAll();
 
@@ -49,7 +50,7 @@ class Storage
         $sql = $builder->write($query);
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
 
         $result = $stmt->fetch();
 
@@ -74,7 +75,7 @@ class Storage
         $sql = $builder->write($query);
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
 
         $result = $stmt->fetch();
         
@@ -104,7 +105,7 @@ class Storage
             ->setValues($company->getAll());
         
             $stmt = $this->conn->prepare($builder->write($query));
-            if (!$stmt->execute($builder->getValues())) {
+            if (!$stmt->execute(Database::values($builder))) {
                 $this->error = $stmt->errorInfo();
                 return false;
             }

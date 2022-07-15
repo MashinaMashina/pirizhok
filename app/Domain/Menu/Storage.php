@@ -2,6 +2,7 @@
 
 namespace App\Domain\Menu;
 
+use App\Database\Database;
 use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
 use NilPortugues\Sql\QueryBuilder\Syntax\OrderBy;
 
@@ -42,7 +43,7 @@ class Storage
         $query->where()->equals('id', $menuId);
 
         $stmt = $this->conn->prepare($builder->write($query));
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
         $result = $stmt->fetch();
 
         $menu = new Menu();
@@ -67,9 +68,8 @@ class Storage
         }
 
         $sql = $builder->writeFormatted($query);
-        $val = $builder->getValues();
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($val);
+        $stmt->execute(Database::values($builder));
         $result = $stmt->fetchAll();
 
         $menus = [];
@@ -94,7 +94,7 @@ class Storage
             ->end();
 
         $stmt = $this->conn->prepare($builder->writeFormatted($query));
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
         $result = $stmt->fetchAll();
 
         foreach ($result as $value) {
@@ -157,7 +157,7 @@ class Storage
             ->setValues($values);
 
         $stmt = $this->conn->prepare($builder->write($query));
-        if (!$stmt->execute($builder->getValues())) {
+        if (!$stmt->execute(Database::values($builder))) {
             $this->error = $stmt->errorInfo();
             return false;
         }
@@ -181,7 +181,7 @@ class Storage
 
         $stmt = $this->conn->prepare($builder->write($query));
 
-        if (!$stmt->execute($builder->getValues())) {
+        if (!$stmt->execute(Database::values($builder))) {
             $this->error = $stmt->errorInfo();
             return false;
         }
@@ -199,7 +199,7 @@ class Storage
             $query->setValues($values);
             $stmt = $this->conn->prepare($builder->write($query));
 
-            if (!$stmt->execute($builder->getValues())) {
+            if (!$stmt->execute(Database::values($builder))) {
                 $this->error = $stmt->errorInfo();
                 return false;
             }

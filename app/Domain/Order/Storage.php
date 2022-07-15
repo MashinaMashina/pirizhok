@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order;
 
+use App\Database\Database;
 use App\Domain\Menu\Position;
 use NilPortugues\Sql\QueryBuilder\Builder\MySqlBuilder;
 
@@ -44,7 +45,7 @@ class Storage
             ->greaterThanOrEqual('date', $today);
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
 
         return $this->orderByStmt($stmt);
     }
@@ -64,7 +65,7 @@ class Storage
         $sql = $builder->write($query);
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($builder->getValues());
+        $stmt->execute(Database::values($builder));
 
         return $this->orderByStmt($stmt);
     }
@@ -103,7 +104,7 @@ class Storage
             ->setValues($values);
 
         $stmt = $this->conn->prepare($builder->write($query));
-        if (!$stmt->execute($builder->getValues())) {
+        if (!$stmt->execute(Database::values($builder))) {
             $this->error = $stmt->errorInfo();
             return false;
         }

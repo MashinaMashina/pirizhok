@@ -8,9 +8,9 @@ class Database
 {
     public static function new()
     {
-        $host = '127.0.0.1';
-        $dbname = 'pirizhok';
-        $username = 'root';
+        $host = 'localhost';
+        $dbname = '';
+        $username = '';
         $password = '';
         $charset = 'utf8';
         $collate = 'utf8_unicode_ci';
@@ -37,5 +37,18 @@ class Database
         }
 
         return $db;
+    }
+
+    public static function values($builder)
+    {
+        $values = $builder->getValues();
+
+        foreach ($values as $k => $v) {
+            if ($v === 'NULL') {
+                $values[$k] = '';
+            }
+        }
+
+        return $values;
     }
 }
