@@ -51,9 +51,15 @@ class Order
                 foreach ($orders as $orderId => $order) {
                     $positions = [];
                     foreach ($order as $position) {
+                        $position['name'] = trim($position['name']);
+
+                        if (empty($position['name'])) {
+                            continue;
+                        }
+
                         $pos = new Position();
                         $pos->load([
-                            'name' => $position['name'] ?? '',
+                            'name' => $position['name'],
                             'weight' => $position['weight'] ?? '',
                             'price' => $position['price'] ?? 0,
                             'count' => $position['count'] ?? 0,
