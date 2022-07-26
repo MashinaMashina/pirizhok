@@ -18,7 +18,7 @@
         <div class="col-2">
             <input type="number" placeholder="кол-во" class="form-control"
                    name="orders[<?=$companyId?>][<?=$orderId?>][<?=$positionId?>][count]"
-                   value="<?=htmlentities($position->count ?? 0)?>" step="0.01">
+                   value="<?=htmlentities($position->count ?? 1)?>" step="0.01">
         </div>
     </div>
 </div>
